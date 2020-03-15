@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { LoggingService } from '../services/logging.service';
+import { AccountsService } from '../services/accounts.service';
 
 @Component({
   selector: 'app-account',
@@ -9,13 +10,12 @@ import { LoggingService } from '../services/logging.service';
 export class AccountComponent {
   @Input() account: {name: string, status: string};
   @Input() id: number;  //Used to indetify this element when passing data back to parent 
-  @Output() statusChanged = new EventEmitter<{id: number, newStatus: string}>();
 
 
   onSetTo(status: string) {
-    this.statusChanged.emit({id: this.id, newStatus: status});
+    this.accountsService.updateAccount(this.id, status)
     this.loggingService.logStatusChange(status);
   }
 
-  constructor(private loggingService : LoggingService){}
+  constructor(private loggingService : LoggingService, private accountsService : AccountsService){}
 }
